@@ -1,0 +1,13 @@
+{
+  "imports": {
+    "@/": "./",
+    "dotenv": "https://deno.land/std@0.215.0/dotenv",
+    "dotenv/": "https://deno.land/std@0.215.0/dotenv/",
+    "crypto": "https://deno.land/std@0.215.0/crypto",
+    "crypto/": "https://deno.land/std@0.215.0/crypto/",
+    "hono": "https://deno.land/x/hono@v4.0.5",
+    "hono/": "https://deno.land/x/hono@v4.0.5/",
+    "valibot": "https://deno.land/x/valibot@v0.29.0",
+    "valibot/": "https://deno.land/x/valibot@v0.29.0/"
+  }
+}
