@@ -5,7 +5,7 @@ const baseSchema = object({
   name: string([minLength(3, "Valid name is required")]),
   description: string([minLength(3, "Valid description is required")]),
   animationUrl: string([
-    startsWith("ipfs://", "possibly ipfs"),
+    startsWith("ipfs://", "possibly not ipfs"),
     minLength(30, "Valid hash is required"),
   ]),
 });
@@ -20,7 +20,7 @@ export const validateRequest = async <T>(
   try {
     parse(baseSchema, body);
   } catch (e) {
-    return c.text((e as any).message, 400);
+    return c.text((e as Error).message, 400);
   }
 
   await next();
