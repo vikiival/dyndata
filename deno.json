@@ -3,5 +3,10 @@
     "start": "deno run -A main.ts"
   },
   "importMap": "./import_map.json",
-  "unstable": ["kv", "cron"]
+  "unstable": ["kv", "cron"],
+  "fmt": {
+    "indentWidth": 2,
+    "semiColons": false,
+    "singleQuote": true
+  }
 }
