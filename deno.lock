@@ -5,6 +5,9 @@
       "jsr:@std/encoding@0.217": "jsr:@std/encoding@0.217.0"
     }
   },
+  "redirects": {
+    "https://unpkg.com/ufo/dist/index.mjs": "https://unpkg.com/ufo@1.4.0/dist/index.mjs"
+  },
   "remote": {
     "https://deno.land/std@0.215.0/assert/assert.ts": "bec068b2fccdd434c138a555b19a2c2393b71dfaada02b7d568a01541e67cdc5",
     "https://deno.land/std@0.215.0/assert/assertion_error.ts": "9f689a101ee586c4ce92f52fa7ddd362e86434ffdf1f848e45987dc7689976b8",
