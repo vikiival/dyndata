@@ -8,6 +8,8 @@
     "hono": "https://deno.land/x/hono@v4.0.5",
     "hono/": "https://deno.land/x/hono@v4.0.5/",
     "valibot": "https://deno.land/x/valibot@v0.29.0",
-    "valibot/": "https://deno.land/x/valibot@v0.29.0/"
+    "valibot/": "https://deno.land/x/valibot@v0.29.0/",
+    "ufo": "https://unpkg.com/ufo@1.4.0/dist",
+    "ufo/": "https://unpkg.com/ufo@1.4.0/dist/"
   }
 }
