@@ -3,26 +3,27 @@ import { cors } from "hono/middleware.ts";
 import { type Context, Hono } from "hono/mod.ts";
 import { Base } from "@/types.ts";
 import { validateRequest as validateBase } from "@/middleware/validateBaseRequest.ts";
+import { CAPTURE_URL, PATH, PORT } from "@/constants.ts";
+// import { IPFS_GW } from "@/constants.ts";
 
 const app = new Hono();
 
-const PORT = 3000; // 80 for production
-const PATH = "./db.sqlite";
 const db = await Deno.openKv(PATH);
 
 app.use("*", cors());
 
 app.get("/", (c: Context) => c.text("Hello world!"));
 
-app.put("base/:id", validateBase, async (c: Context) => {
+app.put("/:chain/base/:id", validateBase, async (c: Context) => {
   const id = c.req.param("id");
+  const chain = c.req.param("chain");
   const body = await c.req.json<Base>();
-  const res = await db.set([id], body);
+  const res = await db.set([chain, id], body);
   return c.json({ id, kv: res });
 });
 
 app.get(
-  "/base/:id/:sn",
+  "/:chain/base/:id/:sn",
   // cache({
   //   cacheName: "token-metadata",
   //   cacheControl: "max-age=3600",
@@ -30,23 +31,24 @@ app.get(
   // }),
   async (c: Context) => {
     const id = c.req.param("id");
+    const chain = c.req.param("chain");
     const sn = c.req.param("sn");
-    const base = await db.get<Base>([id]);
+    const { value: base } = await db.get<Base>([chain, id]);
 
-    if (!base.value) {
-      return c.text("Not found", 404);
+    if (!base) {
+      return c.text(`[API] BASE on Chain ${chain} with ID: ${id} found`, 404);
     }
-
-    const { value } = base;
 
     const encoded = new TextEncoder().encode(sn);
     const hash = await crypto.subtle.digest("KECCAK-256", encoded);
 
+    // const image = await fetch(`/image/${id}/${sn}`); //?
+
     const data: Base = {
-      name: `${value.name} #${sn}`,
-      description: value.description,
+      name: `${base.name} #${sn}`,
+      description: base.description,
       image: "",
-      animation_url: `${value.animation_url}/?hash=${hash}`,
+      animation_url: `${base.animation_url}/?hash=${hash}`,
       external_url: "https://kodadot.xyz/",
     };
 
@@ -54,20 +56,26 @@ app.get(
   },
 );
 
-app.get("/image/:id/:sn", async (c: Context) => {
+app.get("/:chain/image/:id/:sn", async (c: Context) => {
   const id = c.req.param("id");
+  const chain = c.req.param("chain");
   const sn = c.req.param("sn");
-  const base = await db.get<Base>([id]);
+  // const { value: base } = await db.get<Base>([chain, id]);
+  // if (!base) {
+  //   return c.text(`[API] BASE on Chain ${chain} with ID: ${id} found`, 404);
+  // }
   const encoded = new TextEncoder().encode(sn);
   const hash = await crypto.subtle.digest("KECCAK-256", encoded);
+  const url = // base.animation_url.replace("ipfs://", IPFS_GW) + `?hash=${hash}`;
+    `https://nftstorage.link/ipfs/bafybeibc4bhdksstboetdg7q7dzzbxl6ynqmhjdifukm3hxirqvebxefea/?hash=${hash}`;
   //  call fetch at capturegl.vercel.app/api/screenshot, POST body: {url: "https://kodadot.xyz/"}
-  const resp = await fetch("https://capturegl.vercel.app/api/screenshot", {
+  const resp = await fetch(CAPTURE_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      url: "https://kodadot.xyz/",
+      url,
     }),
   });
 
@@ -75,7 +83,9 @@ app.get("/image/:id/:sn", async (c: Context) => {
     return c.text("Unable to get image", resp);
   }
 
-  return resp;
+  const blob = await resp.arrayBuffer();
+
+  return c.body(blob, { headers: resp.headers });
 });
 
 Deno.serve({ port: PORT }, app.fetch);
