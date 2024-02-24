@@ -83,9 +83,11 @@ app.get("/:chain/image/:id/:sn", async (c: Context) => {
     return c.text("Unable to get image", resp);
   }
 
-  const blob = await resp.arrayBuffer();
-
-  return c.body(blob, { headers: resp.headers });
+  // https://hono.dev/guides/examples#proxy
+  const newResponse = new Response(resp.body, resp)
+  return newResponse
+  // const blob = await resp.arrayBuffer();
+  // return c.body(blob, { headers: resp.headers });
 });
 
 Deno.serve({ port: PORT }, app.fetch);
