@@ -13,7 +13,7 @@ app.use('*', cors())
 
 app.get('/', (c: Context) => c.redirect('https://github.com/vikiival/dyndata'))
 
-app.put('/:chain/base/:id', validateBase, async (c: Context) => {
+app.put('/:chain/content/:id', validateBase, async (c: Context) => {
   const id = c.req.param('id')
   const chain = c.req.param('chain')
   const body = await c.req.json<Base>()
@@ -22,7 +22,7 @@ app.put('/:chain/base/:id', validateBase, async (c: Context) => {
 })
 
 app.get(
-  '/:chain/base/:id/:sn',
+  '/:chain/content/:id/:sn',
   cache({
     cacheName: "token-metadata",
     cacheControl: "max-age=3600",
