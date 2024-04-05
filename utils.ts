@@ -1,8 +1,8 @@
 import { crypto } from 'crypto/mod.ts'
 import { encodeHex } from 'jsr:@std/encoding@0.217/hex'
 import {
-  withLeadingSlash,
   withQuery,
+  withTrailingSlash,
 } from 'ufo/index.mjs'
 
 export function hexOf(sn: string): Promise<string> {
@@ -13,6 +13,6 @@ export function hexOf(sn: string): Promise<string> {
 }
 
 export function withUrlParam(url: string, key: string, value: string): string {
-  const base = withLeadingSlash(url)
+  const base = withTrailingSlash(url)
   return withQuery(base, { [key]: value })
 }

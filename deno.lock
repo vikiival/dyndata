@@ -3,6 +3,11 @@
   "packages": {
     "specifiers": {
       "jsr:@std/encoding@0.217": "jsr:@std/encoding@0.217.0"
+    },
+    "jsr": {
+      "@std/encoding@0.217.0": {
+        "integrity": "b03e8ff94c98d6b6a02c02c5cf8e5d203400155516248964fc4559abc04669dc"
+      }
     }
   },
   "redirects": {
@@ -475,6 +480,7 @@
     "https://deno.land/x/valibot@v0.29.0/src/validations/value/value.ts": "fae3aeff130c7f57a013e83d1c1d38c11c197c0754f2d78f5612670cb5f2b89c",
     "https://jsr.io/@std/encoding/0.217.0/_util.ts": "beacef316c1255da9bc8e95afb1fa56ed69baef919c88dc06ae6cb7a6103d376",
     "https://jsr.io/@std/encoding/0.217.0/base64.ts": "4b3bde3c0d699cc0fae6e5bd119ab3a8b9b05293e0053140faa340a30b01e4bc",
-    "https://jsr.io/@std/encoding/0.217.0/hex.ts": "1aecfa504efd0ffcd176037abc7eb7d775a7b38a9e775d9e7260b583ad1301e7"
+    "https://jsr.io/@std/encoding/0.217.0/hex.ts": "1aecfa504efd0ffcd176037abc7eb7d775a7b38a9e775d9e7260b583ad1301e7",
+    "https://unpkg.com/ufo@1.4.0/dist/index.mjs": "c5b1f415f878fb9f0f8ff4f958557b1c88f062b99ece15c62aaa3447c62bc5da"
   }
 }
