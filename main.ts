@@ -2,7 +2,7 @@ import { CAPTURE_URL, IPFS_GW, PATH, PORT } from '@/constants.ts'
 import { validateRequest as validateBase } from '@/middleware/validateBaseRequest.ts'
 import { Base } from '@/types.ts'
 import { hexOf, withUrlParam } from '@/utils.ts'
-import { cors } from 'hono/middleware.ts'
+import { cache, cors } from 'hono/middleware.ts'
 import { type Context, Hono } from 'hono/mod.ts'
 
 const app = new Hono()
@@ -23,11 +23,11 @@ app.put('/:chain/base/:id', validateBase, async (c: Context) => {
 
 app.get(
   '/:chain/base/:id/:sn',
-  // cache({
-  //   cacheName: "token-metadata",
-  //   cacheControl: "max-age=3600",
-  //   wait: true,
-  // }),
+  cache({
+    cacheName: "token-metadata",
+    cacheControl: "max-age=3600",
+    wait: true,
+  }),
   async (c: Context) => {
     const id = c.req.param('id')
     const chain = c.req.param('chain')
