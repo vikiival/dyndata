@@ -16,3 +16,7 @@ export function withUrlParam(url: string, key: string, value: string): string {
   const base = withTrailingSlash(url)
   return withQuery(base, { [key]: value })
 }
+
+export function contractOf(address: string): string {
+  return address?.toLowerCase()
+}
