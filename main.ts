@@ -1,7 +1,7 @@
 import { CAPTURE_URL, IPFS_GW, PATH, PORT } from '@/constants.ts'
 import { validateRequest as validateBase } from '@/middleware/validateBaseRequest.ts'
 import { Base } from '@/types.ts'
-import { hexOf, withUrlParam } from '@/utils.ts'
+import { hexOf, withUrlParam, contractOf } from '@/utils.ts'
 import { cache, cors } from 'hono/middleware.ts'
 import { type Context, Hono } from 'hono/mod.ts'
 
@@ -14,7 +14,7 @@ app.use('*', cors())
 app.get('/', (c: Context) => c.redirect('https://github.com/vikiival/dyndata'))
 
 app.put('/:chain/content/:id', validateBase, async (c: Context) => {
-  const id = c.req.param('id')
+  const id = contractOf(c.req.param('id'))
   const chain = c.req.param('chain')
   const body = await c.req.json<Base>()
   const res = await db.set([chain, id], body)
@@ -29,7 +29,7 @@ app.get(
     wait: true,
   }),
   async (c: Context) => {
-    const id = c.req.param('id')
+    const id = contractOf(c.req.param('id'))
     const chain = c.req.param('chain')
     const sn = c.req.param('sn')
     const { value: base } = await db.get<Base>([chain, id])
@@ -54,7 +54,7 @@ app.get(
 )
 
 app.get('/:chain/image/:id/:sn', async (c: Context) => {
-  const id = c.req.param('id')
+  const id = contractOf(c.req.param('id'))
   const chain = c.req.param('chain')
   const sn = c.req.param('sn')
   const { value: base } = await db.get<Base>([chain, id])
