@@ -1,7 +1,7 @@
 import { CAPTURE_URL, IPFS_GW, PATH, PORT } from '@/constants.ts'
 import { validateRequest as validateBase } from '@/middleware/validateBaseRequest.ts'
 import { Base } from '@/types.ts'
-import { hexOf, withUrlParam, contractOf } from '@/utils.ts'
+import { contractOf, hexOf, withUrlParam } from '@/utils.ts'
 import { cache, cors } from 'hono/middleware.ts'
 import { type Context, Hono } from 'hono/mod.ts'
 
@@ -21,12 +21,14 @@ app.put('/:chain/content/:id', validateBase, async (c: Context) => {
   return c.json({ id, kv: res })
 })
 
-app.get('/:chain/content/:id',
+app.get(
+  '/:chain/content/:id',
   cache({
-    cacheName: "content-base",
-    cacheControl: "max-age=3600",
+    cacheName: 'content-base',
+    cacheControl: 'max-age=3600',
     wait: true,
-  }), async (c: Context) => {
+  }),
+  async (c: Context) => {
     const id = contractOf(c.req.param('id'))
     const chain = c.req.param('chain')
     const { value: base } = await db.get<Base>([chain, id])
@@ -36,13 +38,14 @@ app.get('/:chain/content/:id',
     }
 
     return c.json(base)
-  })
+  },
+)
 
 app.get(
   '/:chain/content/:id/:sn',
   cache({
-    cacheName: "token-metadata",
-    cacheControl: "max-age=3600",
+    cacheName: 'token-metadata',
+    cacheControl: 'max-age=3600',
     wait: true,
   }),
   async (c: Context) => {
