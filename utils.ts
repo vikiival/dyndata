@@ -1,9 +1,6 @@
 import { crypto } from 'crypto/mod.ts'
 import { encodeHex } from 'jsr:@std/encoding@0.217/hex'
-import {
-  withQuery,
-  withTrailingSlash,
-} from 'ufo/index.mjs'
+import { withQuery, withTrailingSlash } from 'ufo/index.mjs'
 
 export function hexOf(sn: string): Promise<string> {
   const encoded = new TextEncoder().encode(sn)
