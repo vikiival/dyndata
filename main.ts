@@ -21,6 +21,23 @@ app.put('/:chain/content/:id', validateBase, async (c: Context) => {
   return c.json({ id, kv: res })
 })
 
+app.get('/:chain/content/:id',
+  cache({
+    cacheName: "content-base",
+    cacheControl: "max-age=3600",
+    wait: true,
+  }), async (c: Context) => {
+    const id = contractOf(c.req.param('id'))
+    const chain = c.req.param('chain')
+    const { value: base } = await db.get<Base>([chain, id])
+
+    if (!base) {
+      return c.text(`[API] BASE on Chain ${chain} with ID: ${id} found`, 404)
+    }
+
+    return c.json(base)
+  })
+
 app.get(
   '/:chain/content/:id/:sn',
   cache({
