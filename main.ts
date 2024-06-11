@@ -93,6 +93,9 @@ app.get('/:chain/image/:id/:sn', async (c: Context) => {
     },
     body: JSON.stringify({
       url,
+      settings: {
+        delay: 3000
+      }
     }),
   })
 
