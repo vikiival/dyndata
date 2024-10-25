@@ -66,7 +66,8 @@ app.get(
       description: base.description,
       image: `${url.origin}/${chain}/image/${id}/${sn}`,
       animation_url: withUrlParam(base.animation_url, 'hash', hash),
-      external_url: 'https://kodadot.xyz/',
+      external_url: 'https://koda.art/',
+      type: 'text/html'
     }
 
     return c.json(data)
