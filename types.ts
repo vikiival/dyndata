@@ -4,4 +4,5 @@ export type Base = {
   image: string
   animation_url: string
   external_url: string
+  type?: string
 }
